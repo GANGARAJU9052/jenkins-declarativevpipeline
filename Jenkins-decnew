@@ -1,13 +1,11 @@
 pipeline{
     agent any
     
-    environment{
-        PATH = "/opt/maven3/bin:$PATH"
     }
     stages{
         stage("Git Checkout"){
             steps{
-                git credentialsId: 'javahome2', url: 'https://github.com/srinivas1987devops/myweb.git'
+                git 'https://github.com/GANGARAJU9052/jenkins-declarativevpipeline.git'
             }
         }
         stage("Maven Build"){
@@ -20,11 +18,11 @@ pipeline{
             steps{
                 sshagent(['tomcat-new']) {
                 sh """
-                    scp -o StrictHostKeyChecking=no target/myweb.war  ec2-user@172.31.45.87:/home/ec2-user/apache-tomcat-9.0.62/webapps/
+                    scp -o StrictHostKeyChecking=no target/myweb.war  172.31.12.127:/home/ec2-user/apache-tomcat-9.0.62/webapps/
                     
-                    ssh ec2-user@172.31.45.87 /home/ec2-user/apache-tomcat-9.0.62/bin/shutdown.sh
+                    ssh 172.31.12.127 /home/ec2-user/apache-tomcat-9.0.62/bin/shutdown.sh
                     
-                    ssh ec2-user@172.31.45.87 /home/ec2-user/apache-tomcat-9.0.62/bin/startup.sh
+                    ssh 172.31.12.127 /home/ec2-user/apache-tomcat-9.0.62/bin/startup.sh
                 
                 """
             }
@@ -33,3 +31,9 @@ pipeline{
         }
     }
 }
+
+
+
+
+
+
